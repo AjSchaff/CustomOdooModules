@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Delivery Route Optimizer</title>
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -14,74 +14,81 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
       rel="stylesheet"
     />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-    />
     <style>
-      .icon-white {
-        color: white;
+      :root {
+        --primary-color: #7f54b3;
+        --bg-white: #fff;
+        --text-color: #121212;
+        --text-color-light: #64728f;
       }
-      .icon-primary {
-        color: #007bff;
-      }
-      .icon-lg {
-        width: 48px;
-        height: 48px;
-      }
-      .icon-md {
-        width: 24px;
-        height: 24px;
-      }
-      .icon-sm {
-        width: 16px;
-        height: 16px;
+      body {
+        font-family: "Montserrat", sans-serif;
       }
     </style>
   </head>
-  <body style="font-family: 'Montserrat', sans-serif">
+  <body>
     <div class="container">
       <div class="my-5">
         <!-- Hero Section -->
-        <div class="bg-light rounded p-4 mb-4">
-          <div class="row">
-            <div class="col-lg-8 mx-auto text-center">
+        <div class="position-relative" style="border-radius: 16px; background: #f8f8f8; padding: 20px 0;">
+          <div class="row" style="padding: 2rem 0rem 0 !important;">
+            <div class="col-lg-8 mx-auto gap-4 d-flex flex-column align-items-center">
               <p
-                class="text-uppercase font-weight-bold text-primary mb-2"
-                style="letter-spacing: 4px; font-size: 14px"
+                class="my-1 text-center text-uppercase"
+                style="letter-spacing: 4px !important; color: var(--primary-color); font-weight: bold; text-align: center; font-size: 14px; font-weight: 600; line-height: 15.96px; text-transform: uppercase;"
               >
                 Delivery Route Optimizer for Odoo
               </p>
               <h1
-                class="text-uppercase font-weight-bold mb-4"
-                style="font-size: 46px; color: #121212"
+                class="text-center text-uppercase my-0"
+                style="color: var(--text-color); font-size: 46px; font-weight: 700; line-height: normal;"
               >
                 Optimize Your Delivery Routes
               </h1>
             </div>
-            <div class="col-lg-12 text-center mb-4">
+            <div class="col-lg-12 d-flex justify-content-center align-items-center" style="margin: 3rem 0;">
               <img
-                src="banner.jpg"
-                class="img-fluid"
-                style="max-width: 560px"
+                src="./banner.png"
+                width="100%"
+                height="auto"
+                style="width: 100%; max-width: 560px;"
+                class="img-responsive"
                 alt="Delivery Route Optimizer Banner"
               />
             </div>
             <div class="col-md-12 text-center">
-              <a href="mailto:support@vikuno.com" class="btn btn-outline-primary mx-2 mb-2">
-                <img src="./assets/icons/mail.svg" class="icon-sm icon-primary" style="margin-right: 8px;" alt="Email">
-                Email Us
+              <a
+                href="mailto:support@vikuno.com"
+                target="_blank"
+                style="background-color: transparent; border-radius: 35px; font-family: Montserrat; display: inline-block; padding: 7px 33px; border: 1px solid var(--primary-color); color: var(--primary-color); text-decoration: none;"
+                class="mx-1 mb-2 deep-1 deep_hover"
+              >
+                <img
+                  class="img"
+                  style="width: 24px"
+                  src="./assets/icons/mail.svg"
+                />
+                <span class="pl-2" style="font-size: 16px; vertical-align: middle">Email Us</span>
               </a>
-              <a href="https://vikuno.com" target="_blank" class="btn btn-primary mx-2 mb-2">
-                <img src="./assets/icons/globe.svg" class="icon-sm icon-white" style="margin-right: 8px;" alt="Website">
-                Visit Website
+              <a
+                href="https://vikuno.com"
+                target="_blank"
+                style="background-color: #7f289b; font-family: Montserrat; display: inline-block; padding: 7px 33px; border: 1px solid #7f289b; border-radius: 35px; text-decoration: none;"
+                class="mx-1 mb-2 deep-1 deep_hover"
+              >
+                <img
+                  class="img"
+                  style="width: 24px"
+                  src="./assets/icons/globe.svg"
+                />
+                <span class="pl-2" style="color: #fff; font-size: 16px; vertical-align: middle">Visit Website</span>
               </a>
             </div>
           </div>
         </div>
 
         <!-- Warning Note -->
-        <div class="alert alert-warning my-4">
+        <div class="alert alert-warning my-4" style="border-radius: 12px;">
           <strong>Note:</strong> This app requires a valid subscription from
           <a href="https://vikuno.com" target="_blank" rel="noopener">Vikuno</a>
           to leverage the Google Maps API and optimize routes. Without a subscription, route
@@ -89,58 +96,49 @@
         </div>
 
         <!-- Key Highlights -->
-        <div class="bg-light rounded p-5 mb-5">
+        <div class="" style="border-radius: 16px; padding: 60px 40px; border: 1px solid #EBEEF2; background: #F5F5F7; box-shadow: 0px 5px 20px -11px rgba(0, 0, 0, 0.25);">
           <div class="row">
-            <div class="col-lg-12 text-center mb-5">
-              <h2 class="font-weight-bold text-uppercase" style="font-size: 40px; color: #121212">
+            <div class="col-lg-12 d-flex flex-column justify-content-center align-items-center">
+              <h2 style="color: var(--text-color); text-align: center; font-size: 40px; font-weight: 700; text-transform: uppercase; padding-bottom: 50px;">
                 Key Highlights
               </h2>
             </div>
-            <div class="col-lg-4 mb-4">
-              <div class="bg-white rounded p-4 h-100 border">
-                <div class="text-center mb-3">
-                  <div
-                    class="bg-primary rounded d-inline-flex align-items-center justify-content-center"
-                    style="width: 42px; height: 42px"
-                  >
-                    <img src="./assets/icons/route.svg" class="icon-md icon-white" alt="Route">
-                  </div>
+            <div class="col-lg-4">
+              <div class="mb-4 d-flex flex-column justify-content-center gap-3" style="border-radius: 12px; border: 1px solid #B6BCCD; background: #FFF; padding:32px">
+                <div class="d-flex justify-content-center align-items-center" style="background-color:#7847D9 !important; border-radius:8px !important; height:42px; width:42px">
+                  <img src="./assets/icons/route.svg" class="img-responsive" height="26px" width="26px">
                 </div>
-                <h5 class="font-weight-bold text-center mb-3">Route Optimization</h5>
-                <p class="text-muted text-center">
+                <h5 class="m-0" style="color:#000 !important; font-weight:bold">
+                  Route Optimization
+                </h5>
+                <p class="m-0" style="font-size:0.9rem; color:var(--text-color-light); font-size: 16px; font-weight: 400;">
                   Calculates the optimal delivery sequence for your orders using Google Maps API.
                 </p>
               </div>
             </div>
-            <div class="col-lg-4 mb-4">
-              <div class="bg-white rounded p-4 h-100 border">
-                <div class="text-center mb-3">
-                  <div
-                    class="bg-primary rounded d-inline-flex align-items-center justify-content-center"
-                    style="width: 42px; height: 42px"
-                  >
-                    <img src="./assets/icons/link.svg" class="icon-md icon-white" alt="Link">
-                  </div>
+            <div class="col-lg-4">
+              <div class="mb-4 d-flex flex-column justify-content-center gap-3" style="border-radius: 12px; border: 1px solid #B6BCCD; background: #FFF; padding:32px">
+                <div class="d-flex justify-content-center align-items-center" style="background-color:#7847D9 !important; border-radius:8px !important; height:42px; width:42px">
+                  <img src="./assets/icons/link.svg" class="img-responsive" height="26px" width="26px">
                 </div>
-                <h5 class="font-weight-bold text-center mb-3">Seamless Integration</h5>
-                <p class="text-muted text-center">
+                <h5 class="m-0" style="color:#000 !important; font-weight:bold">
+                  Seamless Integration
+                </h5>
+                <p class="m-0" style="font-size:0.9rem; color:var(--text-color-light); font-size: 16px; font-weight: 400;">
                   Fully integrated with Odoo Inventory, Sales, and Contacts modules for a smooth
                   workflow.
                 </p>
               </div>
             </div>
-            <div class="col-lg-4 mb-4">
-              <div class="bg-white rounded p-4 h-100 border">
-                <div class="text-center mb-3">
-                  <div
-                    class="bg-primary rounded d-inline-flex align-items-center justify-content-center"
-                    style="width: 42px; height: 42px"
-                  >
-                    <img src="./assets/icons/shield.svg" class="icon-md icon-white" alt="Shield">
-                  </div>
+            <div class="col-lg-4">
+              <div class="mb-4 d-flex flex-column justify-content-center gap-3" style="border-radius: 12px; border: 1px solid #B6BCCD; background: #FFF; padding:32px">
+                <div class="d-flex justify-content-center align-items-center" style="background-color:#7847D9 !important; border-radius:8px !important; height:42px; width:42px">
+                  <img src="./assets/icons/shield.svg" class="img-responsive" height="26px" width="26px">
                 </div>
-                <h5 class="font-weight-bold text-center mb-3">Secure & Reliable</h5>
-                <p class="text-muted text-center">
+                <h5 class="m-0" style="color:#000 !important; font-weight:bold">
+                  Secure & Reliable
+                </h5>
+                <p class="m-0" style="font-size:0.9rem; color:var(--text-color-light); font-size: 16px; font-weight: 400;">
                   Uses a secure proxy for Google Maps API requests, ensuring your data privacy and
                   reliability.
                 </p>
@@ -150,14 +148,14 @@
         </div>
 
         <!-- Installation -->
-        <div class="mb-5">
-          <h2 class="font-weight-bold text-primary mb-4" style="font-size: 28px">Installation</h2>
+        <div class="my-5">
+          <h2 style="font-weight: 700; font-size: 28px; color: var(--primary-color); margin-bottom: 30px;">Installation</h2>
 
           <div class="mb-4">
-            <h3 class="font-weight-bold mb-3" style="font-size: 24px; color: #121212">
+            <h3 style="font-weight: 600; font-size: 24px; color: var(--text-color); margin-bottom: 20px;">
               Custom/Addons Installation
             </h3>
-            <ol class="text-muted" style="font-size: 16px">
+            <ol style="font-size: 16px; color: var(--text-color-light);">
               <li>
                 Download the module and place it in your Odoo <code>custom/addons</code> directory.
               </li>
@@ -174,10 +172,10 @@
           </div>
 
           <div class="mb-4">
-            <h3 class="font-weight-bold mb-3" style="font-size: 24px; color: #121212">
+            <h3 style="font-weight: 600; font-size: 24px; color: var(--text-color); margin-bottom: 20px;">
               Odoo.sh Installation
             </h3>
-            <ol class="text-muted" style="font-size: 16px">
+            <ol style="font-size: 16px; color: var(--text-color-light);">
               <li>
                 Click the <strong>Deploy on Odoo.sh</strong> button below to deploy this module to
                 your Odoo.sh instance.
@@ -193,13 +191,19 @@
                 href="https://apps.odoo.com/loempia/download/odoo-sh/delivery_optimizer/18.0.1.0.2"
                 target="_blank"
                 class="btn btn-primary btn-lg"
+                style="background-color: var(--primary-color); border-color: var(--primary-color); padding: 12px 30px; font-weight: 600;"
               >
-                <img src="./assets/icons/cloud-upload.svg" class="icon-sm icon-white" style="margin-right: 8px;" alt="Deploy">Deploy on Odoo.sh
+                <img
+                  src="./assets/icons/cloud-upload.svg"
+                  style="width: 20px; height: 20px; margin-right: 8px;"
+                  alt="Deploy"
+                >
+                Deploy on Odoo.sh
               </a>
             </div>
           </div>
 
-          <div class="alert alert-warning mt-4">
+          <div class="alert alert-warning mt-4" style="border-radius: 12px;">
             <strong>Important:</strong> This app requires a valid subscription from
             <a href="https://vikuno.com" target="_blank" rel="noopener">Vikuno</a>
             to leverage the Google Maps API and optimize routes. Without a subscription, route
@@ -209,27 +213,37 @@
         </div>
 
         <!-- Support Section -->
-        <div class="bg-white rounded border p-4 mb-4">
-          <h3 class="font-weight-bold text-primary text-center mb-4" style="font-size: 28px">
-            Support
-          </h3>
-          <div class="row text-center">
-            <div class="col-md-6 mb-3">
-              <img src="./assets/icons/mail.svg" class="icon-lg icon-primary" style="margin-bottom: 12px;" alt="Email">
-              <h5>Email Support</h5>
-              <p><a href="mailto:support@vikuno.com">support@vikuno.com</a></p>
-            </div>
-            <div class="col-md-6 mb-3">
-              <img src="./assets/icons/globe.svg" class="icon-lg icon-primary" style="margin-bottom: 12px;" alt="Website">
-              <h5>Website</h5>
-              <p><a href="https://vikuno.com" target="_blank">vikuno.com</a></p>
+        <div class="mb-4 bg-white" style="border: 1px solid #EBEEF2; border-radius: 6px; box-shadow: 0px 8px 20px -4px rgba(0, 0, 0, 0.10);">
+          <div class="p-4">
+            <h3 style="font-weight: 700; font-size: 28px; color: var(--primary-color); text-align: center; margin-bottom: 30px;">
+              Support
+            </h3>
+            <div class="row text-center">
+              <div class="col-md-6 mb-3">
+                <img
+                  src="./assets/icons/mail.svg"
+                  style="width: 48px; height: 48px; margin-bottom: 12px;"
+                  alt="Email"
+                >
+                <h5>Email Support</h5>
+                <p><a href="mailto:support@vikuno.com">support@vikuno.com</a></p>
+              </div>
+              <div class="col-md-6 mb-3">
+                <img
+                  src="./assets/icons/globe.svg"
+                  style="width: 48px; height: 48px; margin-bottom: 12px;"
+                  alt="Website"
+                >
+                <h5>Website</h5>
+                <p><a href="https://vikuno.com" target="_blank">vikuno.com</a></p>
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Footer -->
         <footer class="text-center mt-4">
-          <small class="text-muted">
+          <small style="color: var(--text-color-light);">
             Developed by Critical Hits LLC<br />
             For support, contact: <a href="mailto:support@vikuno.com">support@vikuno.com</a>
           </small>
