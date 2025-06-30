@@ -1,6 +1,6 @@
 {
     "name": "Delivery Route Optimizer",
-    "version": "18.0.1.0.0",
+    "version": "18.0.1.0.1",
     "category": "Inventory/Delivery",
     "summary": "Optimize delivery routes using Google Maps",
     "description": """
