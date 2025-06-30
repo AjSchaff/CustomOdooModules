@@ -10,8 +10,8 @@ class DeliveryOptimizerMapsHelper(models.AbstractModel):
     _description = "Delivery Route Optimizer Google Maps Proxy Helper"
 
     def get_distance_matrix(self, origin, destinations):
-        """Proxy call to Vercel for Google Maps Distance Matrix."""
-        url = "https://vikuno.com/api/google/distance-matrix"  # Update to your endpoint
+        """Proxy call to Server for Google Maps Distance Matrix."""
+        url = "https://vikuno.com/api/google/distance-matrix"
         headers = {
             "Content-Type": "application/json",
             "Accept": "application/json",
@@ -30,10 +30,11 @@ class DeliveryOptimizerMapsHelper(models.AbstractModel):
             if result.get("status") == "OK":
                 return result
             else:
-                _logger.error(
-                    "Google Maps API error (via Vercel): %s", result.get("status")
-                )
+                _logger.error("Google Maps API error: %s", result.get("status"))
                 return False
         except Exception as e:
-            _logger.error("Error calling Google Maps API via Vercel: %s", str(e))
+            _logger.warning(
+                "Error calling Google Maps API. A Subscription is required.  Post install, go to https://vikuno.com/ to subscribe: %s",
+                str(e),
+            )
             return False

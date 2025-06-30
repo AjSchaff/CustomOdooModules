@@ -8,7 +8,6 @@
             <xpath expr="//notebook" position="inside">
                 <page string="Route Optimization" name="route_optimization">
                     <group>
-                        <field name="picking_type_code" invisible="1"/>
                         <field name="optimized_sequence" readonly="1"/>
                         <field name="distance_from_warehouse" readonly="1"/>
                         <field name="total_route_distance" readonly="1"/>
@@ -20,7 +19,7 @@
 
     <!-- Add list view fields -->
     <record id="delivery_optimizer.stock_picking_list_inherit" model="ir.ui.view">
-        <field name="name">stock.picking.tree.inherit.delivery.optimizer</field>
+        <field name="name">stock.picking.list.inherit.delivery.optimizer</field>
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.vpicktree"/>
         <field name="arch" type="xml">
@@ -67,30 +66,15 @@
     </record>
 
     <!-- Main menu structure -->
-    <menuitem id="menu_delivery_optimizer_root" 
-              name="Route Optimization" 
-              parent="stock.menu_stock_root" 
-              sequence="100"/>
-    
+    <menuitem id="menu_delivery_optimizer_root" name="Route Optimization" parent="stock.menu_stock_root" sequence="100"/>
+
     <!-- Sub-menu for optimization actions -->
-    <menuitem id="menu_optimize_route" 
-              name="Optimize Route" 
-              parent="menu_delivery_optimizer_root" 
-              action="action_optimize_route_server" 
-              sequence="10"/>
-    
-    <menuitem id="menu_google_maps_route" 
-              name="Open Google Maps Route" 
-              parent="menu_delivery_optimizer_root" 
-              action="action_open_google_maps_route" 
-              sequence="20"/>
+    <menuitem id="menu_optimize_route" name="Optimize Route" parent="menu_delivery_optimizer_root" action="action_optimize_route_server" sequence="10"/>
+
+    <menuitem id="menu_google_maps_route" name="Open Google Maps Route" parent="menu_delivery_optimizer_root" action="action_open_google_maps_route" sequence="20"/>
 
     <!-- Alternative: Add to Operations menu for better visibility -->
-    <menuitem id="menu_optimize_route_operations" 
-              name="Optimize Route" 
-              parent="stock.menu_stock_warehouse_mgmt" 
-              action="action_optimize_route_server" 
-              sequence="50"/>
+    <menuitem id="menu_optimize_route_operations" name="Optimize Route" parent="stock.menu_stock_warehouse_mgmt" action="action_optimize_route_server" sequence="50"/>
 
 </odoo>
 
