@@ -3,251 +3,241 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Delivery Route Optimizer for Odoo</title>
+    <title>Delivery Route Optimizer</title>
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
       rel="stylesheet"
     />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
     />
-    <style>
-      :root {
-        --primary-color: #7f54b3;
-        --bg-white: #fff;
-        --text-color: #121212;
-        --text-color-light: #64728f;
-      }
-      body {
-        font-family: 'Montserrat', sans-serif;
-      }
-      .hero-section {
-        border-radius: 16px;
-        background: #f8f8f8;
-        padding: 40px 0 20px 0;
-        position: relative;
-      }
-      .key-highlights {
-        border-radius: 16px;
-        padding: 60px 40px;
-        border: 1px solid #ebeef2;
-        background: #f5f5f7;
-        box-shadow: 0px 5px 20px -11px rgba(0, 0, 0, 0.25);
-      }
-      .feature-card {
-        border-radius: 12px;
-        border: 1px solid #b6bccd;
-        background: #fff;
-        padding: 32px;
-        margin-bottom: 24px;
-      }
-      .feature-icon {
-        background-color: #7847d9;
-        border-radius: 8px;
-        height: 42px;
-        width: 42px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-    </style>
   </head>
-  <body>
+  <body style="font-family: 'Montserrat', sans-serif;">
     <div class="container">
-      <!-- Hero Section -->
-      <div class="hero-section mb-5">
-        <div class="row align-items-center">
-          <div class="col-lg-8 mx-auto d-flex flex-column align-items-center gap-4">
-            <p
-              class="my-1 text-center text-uppercase"
-              style="
-                letter-spacing: 4px;
-                color: var(--primary-color);
-                font-weight: bold;
-                font-size: 14px;
-              "
-            >
-              Delivery Route Optimizer for Odoo
-            </p>
-            <div class="col-lg-12 d-flex justify-content-center align-items-center">
+      <div class="my-5">
+        <!-- Hero Section -->
+        <div class="bg-light rounded p-4 mb-4">
+          <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+              <p
+                class="text-uppercase font-weight-bold text-primary mb-2"
+                style="letter-spacing: 4px; font-size: 14px;"
+              >
+                Delivery Route Optimizer for Odoo
+              </p>
+              <h1
+                class="text-uppercase font-weight-bold mb-4"
+                style="font-size: 46px; color: #121212;"
+              >
+                Optimize Your Delivery Routes
+              </h1>
+            </div>
+            <div class="col-lg-12 text-center mb-4">
               <img
-                src="./icon.png"
-                style="width: 50%; max-width: 100px"
-                class="img-responsive"
-                alt="Brand Icon"
+                src="banner.jpg"
+                class="img-fluid"
+                style="max-width: 560px;"
+                alt="Delivery Route Optimizer Banner"
               />
             </div>
-            <h1
-              class="text-center text-uppercase my-0"
-              style="color: var(--text-color); font-size: 46px; font-weight: 700"
-            >
-              Optimize Your Delivery Routes
-            </h1>
-            <p class="text-center" style="color: var(--text-color-light); font-size: 18px">
-              Save time, reduce costs, and delight your customers by automatically calculating the
-              most efficient delivery routes directly within Odoo. Powered by Google Maps, perfect
-              for businesses managing multiple deliveries daily.
-            </p>
-            <div class="alert alert-warning mx-4">
-              <strong>Note:</strong> This app requires a valid subscription from
-              <a href="https://vikuno.com" target="_blank" rel="noopener">Vikuno</a> to leverage the
-              Google Maps API and optimize routes. Without a subscription, route optimization
-              features will not function.
+            <div class="col-md-12 text-center">
+              <a
+                href="mailto:support@vikuno.com"
+                class="btn btn-outline-primary mx-2 mb-2"
+              >
+                <i class="fas fa-envelope mr-2"></i>Email Us
+              </a>
+              <a
+                href="https://vikuno.com"
+                target="_blank"
+                class="btn btn-primary mx-2 mb-2"
+              >
+                <i class="fas fa-globe mr-2"></i>Visit Website
+              </a>
             </div>
-          </div>
-        </div>
-      </div>
-      <!-- Key Highlights -->
-      <div class="key-highlights mb-5">
-        <div class="row">
-          <div class="col-lg-12 d-flex flex-column justify-content-center align-items-center">
-            <h2
-              style="
-                color: var(--text-color);
-                text-align: center;
-                font-size: 40px;
-                font-weight: 700;
-                text-transform: uppercase;
-                padding-bottom: 50px;
-              "
-            >
-              Key Highlights
-            </h2>
-          </div>
-          <div class="col-lg-4">
-            <div class="feature-card d-flex flex-column justify-content-center gap-3">
-              <div class="feature-icon"><i class="fa fa-route text-white"></i></div>
-              <h5 class="m-0" style="color: #000; font-weight: bold">Route Optimization</h5>
-              <p class="m-0" style="font-size: 16px; color: var(--text-color-light)">
-                Calculates the optimal delivery sequence for your orders using Google Maps API.
-              </p>
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="feature-card d-flex flex-column justify-content-center gap-3">
-              <div class="feature-icon"><i class="fa fa-link text-white"></i></div>
-              <h5 class="m-0" style="color: #000; font-weight: bold">Seamless Integration</h5>
-              <p class="m-0" style="font-size: 16px; color: var(--text-color-light)">
-                Fully integrated with Odoo Inventory, Sales, and Contacts modules for a smooth
-                workflow.
-              </p>
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="feature-card d-flex flex-column justify-content-center gap-3">
-              <div class="feature-icon"><i class="fa fa-shield-alt text-white"></i></div>
-              <h5 class="m-0" style="color: #000; font-weight: bold">Secure &amp; Reliable</h5>
-              <p class="m-0" style="font-size: 16px; color: var(--text-color-light)">
-                Uses a secure proxy for Google Maps API requests, ensuring your data privacy and
-                reliability.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Installation -->
-      <div class="mb-5">
-        <h2 style="font-weight: 700; font-size: 28px; color: var(--primary-color)">Installation</h2>
-
-        <!-- Custom/Addons Installation -->
-        <div class="mb-4">
-          <h3
-            style="font-weight: 600; font-size: 24px; color: var(--text-color); margin-bottom: 20px"
-          >
-            Custom/Addons Installation
-          </h3>
-          <ol style="font-size: 16px; color: var(--text-color-light)">
-            <li>
-              Download the module and place it in your Odoo <code>custom/addons</code> directory.
-            </li>
-            <li>Update the Odoo Apps list.</li>
-            <li>
-              Search for <strong>Delivery Route Optimizer</strong> in the Apps menu and click
-              <strong>Install</strong>.
-            </li>
-            <li>
-              Go to <strong>Settings &gt; Delivery Route Optimizer</strong> to configure your
-              subscription.
-            </li>
-          </ol>
-        </div>
-
-        <!-- Odoo.sh Installation -->
-        <div class="mb-4">
-          <h3
-            style="font-weight: 600; font-size: 24px; color: var(--text-color); margin-bottom: 20px"
-          >
-            Odoo.sh Installation
-          </h3>
-          <ol style="font-size: 16px; color: var(--text-color-light)">
-            <li>
-              Click the <strong>Deploy on Odoo.sh</strong> button below to deploy this module to
-              your Odoo.sh instance.
-            </li>
-            <li>Wait for the build to complete and the module to be installed.</li>
-            <li>
-              Go to <strong>Settings &gt; Delivery Route Optimizer</strong> to configure your
-              subscription.
-            </li>
-          </ol>
-          <div class="text-center mt-3">
-            <a
-              href="https://apps.odoo.com/loempia/download/odoo-sh/delivery_optimizer/18.0.1.0.2"
-              target="_blank"
-              class="btn btn-primary btn-lg"
-              style="
-                background-color: var(--primary-color);
-                border-color: var(--primary-color);
-                padding: 12px 30px;
-                font-weight: 600;
-              "
-            >
-              <i class="fa fa-cloud-upload-alt me-2"></i>Deploy on Odoo.sh
-            </a>
           </div>
         </div>
 
-        <!-- Subscription Note -->
-        <div class="alert alert-warning mt-4">
-          <strong>Important:</strong> This app requires a valid subscription from
-          <a
-            href="https://www.vikuno.com/modules/delivery-route-optimizier"
-            target="_blank"
-            rel="noopener"
-            >Vikuno</a
-          >
+        <!-- Warning Note -->
+        <div class="alert alert-warning my-4">
+          <strong>Note:</strong> This app requires a valid subscription from
+          <a href="https://vikuno.com" target="_blank" rel="noopener">Vikuno</a>
           to leverage the Google Maps API and optimize routes. Without a subscription, route
-          optimization features will not function. Please visit the Vikuno website to obtain your
-          subscription ID.
+          optimization features will not function.
         </div>
-      </div>
-      <!-- Video Demo -->
-      <div class="mb-5">
-        <h2 style="font-weight: 700; font-size: 28px; color: var(--primary-color)">Video Demo</h2>
-        <div class="ratio ratio-16x9">
-          <iframe src="https://www.youtube.com/embed/5woQnJKcB6g" allowfullscreen></iframe>
+
+        <!-- Key Highlights -->
+        <div class="bg-light rounded p-5 mb-5">
+          <div class="row">
+            <div class="col-lg-12 text-center mb-5">
+              <h2
+                class="font-weight-bold text-uppercase"
+                style="font-size: 40px; color: #121212;"
+              >
+                Key Highlights
+              </h2>
+            </div>
+            <div class="col-lg-4 mb-4">
+              <div
+                class="bg-white rounded p-4 h-100 border"
+              >
+                <div class="text-center mb-3">
+                  <div
+                    class="bg-primary rounded d-inline-flex align-items-center justify-content-center"
+                    style="width: 42px; height: 42px;"
+                  >
+                    <i class="fas fa-route text-white"></i>
+                  </div>
+                </div>
+                <h5 class="font-weight-bold text-center mb-3">Route Optimization</h5>
+                <p class="text-muted text-center">
+                  Calculates the optimal delivery sequence for your orders using Google Maps API.
+                </p>
+              </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+              <div
+                class="bg-white rounded p-4 h-100 border"
+              >
+                <div class="text-center mb-3">
+                  <div
+                    class="bg-primary rounded d-inline-flex align-items-center justify-content-center"
+                    style="width: 42px; height: 42px;"
+                  >
+                    <i class="fas fa-link text-white"></i>
+                  </div>
+                </div>
+                <h5 class="font-weight-bold text-center mb-3">Seamless Integration</h5>
+                <p class="text-muted text-center">
+                  Fully integrated with Odoo Inventory, Sales, and Contacts modules for a smooth
+                  workflow.
+                </p>
+              </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+              <div
+                class="bg-white rounded p-4 h-100 border"
+              >
+                <div class="text-center mb-3">
+                  <div
+                    class="bg-primary rounded d-inline-flex align-items-center justify-content-center"
+                    style="width: 42px; height: 42px;"
+                  >
+                    <i class="fas fa-shield-alt text-white"></i>
+                  </div>
+                </div>
+                <h5 class="font-weight-bold text-center mb-3">Secure & Reliable</h5>
+                <p class="text-muted text-center">
+                  Uses a secure proxy for Google Maps API requests, ensuring your data privacy and
+                  reliability.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
+
+        <!-- Installation -->
+        <div class="mb-5">
+          <h2 class="font-weight-bold text-primary mb-4" style="font-size: 28px;">Installation</h2>
+
+          <div class="mb-4">
+            <h3
+              class="font-weight-bold mb-3"
+              style="font-size: 24px; color: #121212;"
+            >
+              Custom/Addons Installation
+            </h3>
+            <ol class="text-muted" style="font-size: 16px;">
+              <li>
+                Download the module and place it in your Odoo <code>custom/addons</code> directory.
+              </li>
+              <li>Update the Odoo Apps list.</li>
+              <li>
+                Search for <strong>Delivery Route Optimizer</strong> in the Apps menu and click
+                <strong>Install</strong>.
+              </li>
+              <li>
+                Go to <strong>Settings > Delivery Route Optimizer</strong> to configure your
+                subscription.
+              </li>
+            </ol>
+          </div>
+
+          <div class="mb-4">
+            <h3
+              class="font-weight-bold mb-3"
+              style="font-size: 24px; color: #121212;"
+            >
+              Odoo.sh Installation
+            </h3>
+            <ol class="text-muted" style="font-size: 16px;">
+              <li>
+                Click the <strong>Deploy on Odoo.sh</strong> button below to deploy this module to
+                your Odoo.sh instance.
+              </li>
+              <li>Wait for the build to complete and the module to be installed.</li>
+              <li>
+                Go to <strong>Settings > Delivery Route Optimizer</strong> to configure your
+                subscription.
+              </li>
+            </ol>
+            <div class="text-center mt-3">
+              <a
+                href="https://apps.odoo.com/loempia/download/odoo-sh/delivery_optimizer/18.0.1.0.2"
+                target="_blank"
+                class="btn btn-primary btn-lg"
+              >
+                <i class="fas fa-cloud-upload-alt mr-2"></i>Deploy on Odoo.sh
+              </a>
+            </div>
+          </div>
+
+          <div class="alert alert-warning mt-4">
+            <strong>Important:</strong> This app requires a valid subscription from
+            <a href="https://vikuno.com" target="_blank" rel="noopener">Vikuno</a>
+            to leverage the Google Maps API and optimize routes. Without a subscription, route
+            optimization features will not function. Please visit the Vikuno website to obtain your
+            subscription ID.
+          </div>
+        </div>
+
+        <!-- Support Section -->
+        <div class="bg-white rounded border p-4 mb-4">
+          <h3
+            class="font-weight-bold text-primary text-center mb-4"
+            style="font-size: 28px;"
+          >
+            Support
+          </h3>
+          <div class="row text-center">
+            <div class="col-md-6 mb-3">
+              <i class="fas fa-envelope fa-2x text-primary mb-3"></i>
+              <h5>Email Support</h5>
+              <p><a href="mailto:support@vikuno.com">support@vikuno.com</a></p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <i class="fas fa-globe fa-2x text-primary mb-3"></i>
+              <h5>Website</h5>
+              <p><a href="https://vikuno.com" target="_blank">vikuno.com</a></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center mt-4">
+          <small class="text-muted">
+            Developed by Critical Hits LLC<br />
+            For support, contact: <a href="mailto:support@vikuno.com">support@vikuno.com</a>
+          </small>
+        </footer>
       </div>
-      <!-- Footer -->
-      <footer class="mt-4 text-center">
-        <small>
-          Developed by Critical Hits LLC<br />
-          For support, contact: <a href="mailto:support@vikuno.com">support@vikuno.com</a>
-        </small>
-      </footer>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
   </body>
 </html>
