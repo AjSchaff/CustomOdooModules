@@ -403,6 +403,9 @@ class StockPicking(models.Model):
             and p.partner_id.city
             and p.partner_id.zip
         ]
+        _logger.info("Attempting to optimize the following deliveries (IDs and Names): %s", [
+            (p.id, p.name) for p in todays_deliveries
+        ])
         not_today_deliveries = [p for p in all_pickings if p not in todays_deliveries]
 
         # Reset all non-today deliveries
