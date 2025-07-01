@@ -384,7 +384,11 @@ class StockPicking(models.Model):
             [
                 ("picking_type_id.code", "=", "outgoing"),
                 ("picking_type_id", "=", 2),
-                ("state", "in", ("assigned", "confirmed")),
+                (
+                    "state",
+                    "=",
+                    "assigned",
+                ),  # Only optimize deliveries in "ready" status
                 ("company_id", "=", company.id),
             ]
         )
@@ -417,9 +421,7 @@ class StockPicking(models.Model):
                 "tag": "display_notification",
                 "params": {
                     "title": _("No Eligible Deliveries"),
-                    "message": _(
-                        "No outgoing deliveries in assigned or confirmed state were found for today."
-                    ),
+                    "message": _("No outgoing deliveries were assigned for today."),
                     "type": "warning",
                     "sticky": False,
                 },
@@ -489,7 +491,11 @@ class StockPicking(models.Model):
         pickings = self.env["stock.picking"].search(
             [
                 ("picking_type_id.code", "=", "outgoing"),
-                ("state", "in", ("assigned", "confirmed")),
+                (
+                    "state",
+                    "=",
+                    "assigned",
+                ),  # Only optimize deliveries in "ready" status
                 ("scheduled_date", ">=", today_str + " 00:00:00"),
                 ("scheduled_date", "<=", today_str + " 23:59:59"),
             ]
