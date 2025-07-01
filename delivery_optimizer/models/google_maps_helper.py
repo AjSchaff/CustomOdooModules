@@ -33,7 +33,7 @@ class DeliveryOptimizerMapsHelper(models.AbstractModel):
                 _logger.error("Google Maps API error: %s", result.get("status"))
                 return False
         except Exception as e:
-            _logger.warning(
+            _logger.info(
                 "Error calling Google Maps API. A Subscription is required.  Post install, go to https://vikuno.com/ to subscribe: %s",
                 str(e),
             )
