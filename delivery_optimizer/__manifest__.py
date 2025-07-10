@@ -45,6 +45,7 @@
         "views/stock_picking_views.xml",
         "views/res_config_settings_views.xml",
     ],
+    "price": 200,
     "images": ["static/description/banner.png"],
     "installable": True,
     "application": True,
