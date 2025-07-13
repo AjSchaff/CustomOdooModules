@@ -26,6 +26,7 @@
     "summary": "Find the closest Distributor for any of your contacts with the click of a button.",
     "description": """
         Find the closest Distributor for any of your contacts with the click of a button.
+        Requires subscription activation for Google Maps API access.
     """,
     "author": "Critical Hits LLC",
     "company": "Critical Hits LLC",
@@ -41,8 +42,11 @@
     },
     "data": [
         "views/crm_views.xml",
+        "views/res_config_settings_views.xml",
         "data/model_load_stub.xml",
     ],
+    "price": 150,
+    "images": ["static/description/banner.png"],
     "installable": True,
     "application": False,
     "auto_install": False,

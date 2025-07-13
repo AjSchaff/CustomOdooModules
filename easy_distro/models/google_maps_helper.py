@@ -1,16 +1,12 @@
 import requests
 import logging
-from odoo import models
+from odoo import models, _
 
 _logger = logging.getLogger(__name__)
 
 class GoogleMapsHelper(models.AbstractModel):
     _name = 'google.maps.helper'
     _description = 'Google Maps Integration Helper'
-
-    def _get_api_key(self):
-        # Hardcoded API key for demo purposes
-        return 'AIzaSyBo9jLDlMwV7kKSg_i7RMLAbYoKdbAa5hU'
 
     def _format_address(self, partner):
         """Format partner address for Google Maps API"""
@@ -35,13 +31,20 @@ class GoogleMapsHelper(models.AbstractModel):
         return ", ".join(address_parts)
 
     def get_distance_matrix(self, origin, destinations):
-        """Calculate distances between origin and multiple destinations"""
-        api_key = self._get_api_key()
-        if not api_key:
-            _logger.error("Google Maps API key not configured.")
+        """Proxy call to Server for Google Maps Distance Matrix."""
+        # Check subscription status first
+        if not self._check_subscription_active():
+            _logger.warning("EasyDistro subscription not active. Please activate your subscription.")
             return False
 
-        # Format origin address
+        url = "https://vikuno.com/api/google/distance-matrix"
+        headers = {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "User-Agent": "Odoo-EasyDistro/1.0",
+        }
+
+        # Format addresses
         origin_str = self._format_address(origin)
         if not origin_str:
             _logger.error("Origin partner %s has no valid address", origin.name)
@@ -63,37 +66,48 @@ class GoogleMapsHelper(models.AbstractModel):
             _logger.error("No valid destination addresses found")
             return False
 
-        # Join destinations with pipe separator
-        dest_str = "|".join(dest_addresses)
-
-        base_url = "https://maps.googleapis.com/maps/api/distancematrix/json"
-        
-        params = {
-            'origins': origin_str,
-            'destinations': dest_str,
-            'key': api_key,
-            'units': 'metric'  # Use metric units
+        data = {
+            "origin": origin_str,
+            "destinations": dest_addresses
         }
 
         try:
-            response = requests.get(base_url, params=params, timeout=30)
+            response = requests.post(url, json=data, headers=headers, timeout=15)
             response.raise_for_status()
             result = response.json()
-
-            if result.get('status') == 'OK':
-                _logger.info("Successfully retrieved distance matrix for %d destinations", len(dest_addresses))
+            if result.get("status") == "OK":
                 return result
             else:
-                error_msg = result.get('error_message', 'Unknown error')
-                _logger.error("Google Maps API error: %s - %s", result.get('status'), error_msg)
+                _logger.error("Google Maps API error: %s", result.get("status"))
+                return False
+        except Exception as e:
+            _logger.info(
+                "Error calling Google Maps API. A Subscription is required. Post install, go to https://vikuno.com/ to subscribe: %s",
+                str(e),
+            )
+            return False
+
+    def _check_subscription_active(self):
+        """Check if EasyDistro subscription is active"""
+        try:
+            subscription_id = self.env['ir.config_parameter'].sudo().get_param('easy_distro.subscription_id')
+            if not subscription_id:
                 return False
 
-        except requests.exceptions.Timeout:
-            _logger.error("Google Maps API request timed out")
-            return False
-        except requests.exceptions.RequestException as e:
-            _logger.error("Error calling Google Maps API: %s", str(e))
-            return False
+            # Call Vercel API to check subscription status
+            url = "https://vikuno.com/api/check-subscription"
+            data = {"subscriptionId": subscription_id}
+            
+            response = requests.post(
+                url, 
+                json=data, 
+                headers={"Content-Type": "application/json"}, 
+                timeout=10
+            )
+            response.raise_for_status()
+            result = response.json()
+            
+            return result.get("valid", False)
         except Exception as e:
-            _logger.error("Unexpected error calling Google Maps API: %s", str(e))
+            _logger.error(f"Failed to check EasyDistro subscription status: {str(e)}")
             return False

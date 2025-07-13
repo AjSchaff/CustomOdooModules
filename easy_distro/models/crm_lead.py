@@ -29,6 +29,10 @@ class CrmLead(models.Model):
         """Server action to find and populate closest distributors with distances"""
         for lead in self:
             try:
+                # Check subscription status first
+                if not self._check_subscription_active():
+                    raise UserError("EasyDistro subscription is not active. Please activate your subscription in Settings > EasyDistro.")
+                
                 # Validation checks
                 self._validate_lead_for_distance_calculation(lead)
                 
@@ -49,6 +53,32 @@ class CrmLead(models.Model):
             except Exception as e:
                 _logger.error("Error finding closest distributors for lead %s: %s", lead.name, str(e))
                 raise UserError(f"An error occurred while finding closest distributors: {str(e)}")
+
+    def _check_subscription_active(self):
+        """Check if EasyDistro subscription is active"""
+        try:
+            subscription_id = self.env['ir.config_parameter'].sudo().get_param('easy_distro.subscription_id')
+            if not subscription_id:
+                return False
+
+            # Call Vercel API to check subscription status
+            import requests
+            url = "https://vikuno.com/api/check-subscription"
+            data = {"subscriptionId": subscription_id}
+            
+            response = requests.post(
+                url, 
+                json=data, 
+                headers={"Content-Type": "application/json"}, 
+                timeout=10
+            )
+            response.raise_for_status()
+            result = response.json()
+            
+            return result.get("valid", False)
+        except Exception as e:
+            _logger.error(f"Failed to check EasyDistro subscription status: {str(e)}")
+            return False
 
     def _validate_lead_for_distance_calculation(self, lead):
         """Validate that the lead has the necessary information for distance calculation"""
@@ -78,7 +108,7 @@ class CrmLead(models.Model):
         distance_result = maps_helper.get_distance_matrix(lead.partner_id, distributors)
         
         if not distance_result:
-            raise UserError("Failed to get distance matrix. Please check your Google Maps API key configuration.")
+            raise UserError("Failed to get distance matrix. Please check your subscription status.")
         
         return self._process_distance_results(distance_result, distributors)
 
