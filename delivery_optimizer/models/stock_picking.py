@@ -11,6 +11,10 @@ _logger = logging.getLogger(__name__)
 class StockPicking(models.Model):
     _inherit = "stock.picking"
 
+    # API endpoints (these will be appended to the base URL)
+    SUBSCRIPTION_CHECK_ENDPOINT = "/api/check-subscription"
+    GOOGLE_OPTIMIZE_ENDPOINT = "/api/optimize-route"
+
     optimized_sequence = fields.Char(
         string="Stop #",
         help="Stop number after route optimization or a status message",
@@ -33,13 +37,21 @@ class StockPicking(models.Model):
         digits=(16, 2),
     )
 
+    def _get_vercel_api_base_url(self):
+        """Return the correct Vercel API base URL depending on environment."""
+        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
+        _logger.info(f"Base URL: {base_url}")
+        if "localhost" in (base_url or ""):
+            return "http://localhost:3000"
+        return "http://vikuno"
+
     def _format_address(self, partner):
         """Format address for Google Maps API."""
         return f"{partner.street}, {partner.city}, {partner.zip}"
 
     def _call_vercel_optimize_route(self, addresses):
         """Call Vercel API to get optimized route and distance matrix."""
-        url = "https://vikuno.com/api/optimize-route"  # <-- update to your actual endpoint
+        url = f"{self._get_vercel_api_base_url()}{self.GOOGLE_OPTIMIZE_ENDPOINT}"
         headers = {
             "Content-Type": "application/json",
             "Accept": "application/json",
@@ -81,9 +93,10 @@ class StockPicking(models.Model):
             data = {
                 "subscriptionId": subscription_id,
                 "email": current_user_email,
+                "moduleName": "delivery-route-optimizer",
             }
 
-            url = "https://vikuno.com/api/check-subscription"
+            url = f"{self._get_vercel_api_base_url()}{self.SUBSCRIPTION_CHECK_ENDPOINT}"
             headers = {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
@@ -403,9 +416,10 @@ class StockPicking(models.Model):
             and p.partner_id.city
             and p.partner_id.zip
         ]
-        _logger.info("Attempting to optimize the following deliveries (IDs and Names): %s", [
-            (p.id, p.name) for p in todays_deliveries
-        ])
+        _logger.info(
+            "Attempting to optimize the following deliveries (IDs and Names): %s",
+            [(p.id, p.name) for p in todays_deliveries],
+        )
         not_today_deliveries = [p for p in all_pickings if p not in todays_deliveries]
 
         # Reset all non-today deliveries

@@ -4,14 +4,15 @@ from odoo import models, _
 
 _logger = logging.getLogger(__name__)
 
+
 class GoogleMapsHelper(models.AbstractModel):
-    _name = 'google.maps.helper'
-    _description = 'Google Maps Integration Helper'
+    _name = "google.maps.helper"
+    _description = "Google Maps Integration Helper"
 
     def _format_address(self, partner):
         """Format partner address for Google Maps API"""
         address_parts = []
-        
+
         if partner.street:
             address_parts.append(partner.street)
         if partner.street2:
@@ -24,17 +25,19 @@ class GoogleMapsHelper(models.AbstractModel):
             address_parts.append(partner.zip)
         if partner.country_id and partner.country_id.name:
             address_parts.append(partner.country_id.name)
-            
+
         if not address_parts:
             return None
-            
+
         return ", ".join(address_parts)
 
     def get_distance_matrix(self, origin, destinations):
         """Proxy call to Server for Google Maps Distance Matrix."""
         # Check subscription status first
         if not self._check_subscription_active():
-            _logger.warning("EasyDistro subscription not active. Please activate your subscription.")
+            _logger.warning(
+                "EasyDistro subscription not active. Please activate your subscription."
+            )
             return False
 
         url = "https://vikuno.com/api/google/distance-matrix"
@@ -53,23 +56,22 @@ class GoogleMapsHelper(models.AbstractModel):
         # Format destination addresses
         dest_addresses = []
         valid_destinations = []
-        
+
         for dest in destinations:
             dest_str = self._format_address(dest)
             if dest_str:
                 dest_addresses.append(dest_str)
                 valid_destinations.append(dest)
             else:
-                _logger.warning("Destination partner %s has no valid address, skipping", dest.name)
+                _logger.warning(
+                    "Destination partner %s has no valid address, skipping", dest.name
+                )
 
         if not dest_addresses:
             _logger.error("No valid destination addresses found")
             return False
 
-        data = {
-            "origin": origin_str,
-            "destinations": dest_addresses
-        }
+        data = {"origin": origin_str, "destinations": dest_addresses}
 
         try:
             response = requests.post(url, json=data, headers=headers, timeout=15)
@@ -90,23 +92,24 @@ class GoogleMapsHelper(models.AbstractModel):
     def _check_subscription_active(self):
         """Check if EasyDistro subscription is active"""
         try:
-            subscription_id = self.env['ir.config_parameter'].sudo().get_param('easy_distro.subscription_id')
+            subscription_id = (
+                self.env["ir.config_parameter"]
+                .sudo()
+                .get_param("easy_distro.subscription_id")
+            )
             if not subscription_id:
                 return False
 
             # Call Vercel API to check subscription status
             url = "https://vikuno.com/api/check-subscription"
-            data = {"subscriptionId": subscription_id}
-            
+            data = {"subscriptionId": subscription_id, "moduleName": "easy-distro"}
+
             response = requests.post(
-                url, 
-                json=data, 
-                headers={"Content-Type": "application/json"}, 
-                timeout=10
+                url, json=data, headers={"Content-Type": "application/json"}, timeout=10
             )
             response.raise_for_status()
             result = response.json()
-            
+
             return result.get("valid", False)
         except Exception as e:
             _logger.error(f"Failed to check EasyDistro subscription status: {str(e)}")

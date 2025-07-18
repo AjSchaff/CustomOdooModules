@@ -10,7 +10,7 @@
             <block title="Subscription Settings" name="subscription_settings">
               <setting id="subscription_id" string="Subscription Configuration" help="Enter your subscription ID from your external billing account." documentation="https://vikuno.com/modules/easy-distro" title="In order to use this feature, you need to activate your subscription.">
                 <field name="subscription_id"/>
-                <button name="check_subscription_status" type="object" string="Activate Subscription" class="btn-secondary ps-2 w-100" icon="fa-refresh" title="Get the status of your subscription from your external billing account."/>
+                <button name="easy_distro_check_subscription_status" type="object" string="Activate Subscription" class="btn-secondary ps-2 w-100" icon="fa-refresh" title="Get the status of your subscription from your external billing account."/>
               </setting>
             </block>
           </app>
