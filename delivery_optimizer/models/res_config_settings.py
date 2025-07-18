@@ -9,9 +9,6 @@ _logger = logging.getLogger(__name__)
 class ResConfigSettings(models.TransientModel):
     _inherit = "res.config.settings"
 
-    # Base URL for your Vercel API
-    VERCEL_API_BASE_URL = "https://vikuno.com"
-
     # API endpoints (these will be appended to the base URL)
     SUBSCRIPTION_CHECK_ENDPOINT = "/api/check-subscription"
     GOOGLE_OPTIMIZE_ENDPOINT = "/api/google/optimize-route"
@@ -95,12 +92,19 @@ class ResConfigSettings(models.TransientModel):
             else:
                 rec.subscription_tier = "tier4"
 
+    def _get_vercel_api_base_url(self):
+        """Return the correct Vercel API base URL depending on environment."""
+        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
+        if "localhost" in (base_url or ""):
+            return "http://localhost:3000"
+        return "http://vikuno"
+
     def _call_vercel_api(self, data, endpoint=None):
         """Make API call to Vercel with proper error handling"""
         if endpoint is None:
             endpoint = self.SUBSCRIPTION_CHECK_ENDPOINT
 
-        url = f"{self.VERCEL_API_BASE_URL}{endpoint}"
+        url = f"{self._get_vercel_api_base_url()}{endpoint}"
 
         try:
             response = requests.post(
@@ -129,7 +133,11 @@ class ResConfigSettings(models.TransientModel):
             )
 
         try:
-            data = {"subscriptionId": self.subscription_id, "email": user_email}
+            data = {
+                "subscriptionId": self.subscription_id,
+                "email": user_email,
+                "moduleName": "delivery-route-optimizer",
+            }
             response = self._call_vercel_api(data, "/api/check-subscription")
             if response.get("valid"):
                 message = response.get("message", "Subscription validated successfully")
