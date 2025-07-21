@@ -65,24 +65,19 @@ class CrmLead(models.Model):
             except UserError:
                 raise
             except Exception as e:
-                _logger.error(
-                    "Error finding closest distributors for lead %s: %s",
-                    lead.name,
-                    str(e),
-                )
                 raise UserError(
                     f"An error occurred while finding closest distributors: {str(e)}"
                 )
 
     def _check_subscription_active(self):
-        """Check if EasyDistro subscription is active"""
+        """Check if Easy Distro subscription is active"""
         try:
-            subscription_id = (
+            easy_distro_subscription_id = (
                 self.env["ir.config_parameter"]
                 .sudo()
-                .get_param("easy_distro.subscription_id")
+                .get_param("easy_distro.easy_distro_subscription_id")
             )
-            if not subscription_id:
+            if not easy_distro_subscription_id:
                 return False
 
             # Call Vercel API to check subscription status
@@ -90,7 +85,7 @@ class CrmLead(models.Model):
 
             url = f"{self._get_vercel_api_base_url()}{self.SUBSCRIPTION_CHECK_ENDPOINT}"
             data = {
-                "subscriptionId": subscription_id,
+                "subscriptionId": easy_distro_subscription_id,
                 "email": self.env.user.email,
                 "moduleName": "easy-distro",
             }
@@ -103,7 +98,7 @@ class CrmLead(models.Model):
 
             return result.get("valid", False)
         except Exception as e:
-            _logger.error(f"Failed to check EasyDistro subscription status: {str(e)}")
+            _logger.error(f"Failed to check Easy Distro subscription status: {str(e)}")
             return False
 
     def _validate_lead_for_distance_calculation(self, lead):
@@ -140,12 +135,10 @@ class CrmLead(models.Model):
         """Calculate distances using Google Maps API"""
         maps_helper = self.env["google.maps.helper"]
         distance_result = maps_helper.get_distance_matrix(lead.partner_id, distributors)
-
-        if not distance_result:
-            raise UserError(
-                "Failed to get distance matrix. Please check your subscription status."
-            )
-
+        if "data" in distance_result:
+            distance_result = distance_result["data"]
+        if not distance_result or "rows" not in distance_result:
+            return []
         return self._process_distance_results(distance_result, distributors)
 
     def _process_distance_results(self, distance_result, distributors):
@@ -159,20 +152,12 @@ class CrmLead(models.Model):
         for i, element in enumerate(elements):
             if i >= len(distributors):
                 break
-
             if element.get("status") == "OK" and "distance" in element:
                 distance_value = element["distance"]["value"]
                 distance_km = round(distance_value / 1000.0, 2)
                 distance_data.append(
                     {"distributor": distributors[i], "distance_km": distance_km}
                 )
-            elif element.get("status") != "OK":
-                _logger.warning(
-                    "Distance calculation failed for distributor %s: %s",
-                    distributors[i].name,
-                    element.get("status"),
-                )
-
         # Sort by distance and return top 3
         distance_data.sort(key=lambda x: x["distance_km"])
         return distance_data[:3]
@@ -199,16 +184,10 @@ class CrmLead(models.Model):
             lead.message_post(
                 body=f"Found {len(distance_data)} closest distributors: {', '.join(distributor_names)}"
             )
-            _logger.info(
-                "Updated lead %s with %d closest distributors",
-                lead.name,
-                len(distance_data),
-            )
         else:
             lead.message_post(
                 body="No valid distributors found within reachable distance."
             )
-            _logger.warning("No distributors found for lead %s", lead.name)
 
     @api.model
     def validate_distributor_addresses(self):

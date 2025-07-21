@@ -9,6 +9,17 @@ class GoogleMapsHelper(models.AbstractModel):
     _name = "google.maps.helper"
     _description = "Google Maps Integration Helper"
 
+    # API endpoints (these will be appended to the base URL)
+    SUBSCRIPTION_CHECK_ENDPOINT = "/api/check-subscription"
+    GOOGLE_DISTANCE_MATRIX_ENDPOINT = "/api/google/distance-matrix"
+
+    def _get_vercel_api_base_url(self):
+        """Return the correct Vercel API base URL depending on environment."""
+        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
+        if "localhost" in (base_url or ""):
+            return "http://localhost:3000"
+        return "http://vikuno"
+
     def _format_address(self, partner):
         """Format partner address for Google Maps API"""
         address_parts = []
@@ -40,7 +51,7 @@ class GoogleMapsHelper(models.AbstractModel):
             )
             return False
 
-        url = "https://vikuno.com/api/google/distance-matrix"
+        url = f"{self._get_vercel_api_base_url()}{self.GOOGLE_DISTANCE_MATRIX_ENDPOINT}"
         headers = {
             "Content-Type": "application/json",
             "Accept": "application/json",
@@ -92,17 +103,21 @@ class GoogleMapsHelper(models.AbstractModel):
     def _check_subscription_active(self):
         """Check if EasyDistro subscription is active"""
         try:
-            subscription_id = (
+            easy_distro_subscription_id = (
                 self.env["ir.config_parameter"]
                 .sudo()
-                .get_param("easy_distro.subscription_id")
+                .get_param("easy_distro.easy_distro_subscription_id")
             )
-            if not subscription_id:
+            if not easy_distro_subscription_id:
                 return False
 
             # Call Vercel API to check subscription status
-            url = "https://vikuno.com/api/check-subscription"
-            data = {"subscriptionId": subscription_id, "moduleName": "easy-distro"}
+            url = f"{self._get_vercel_api_base_url()}{self.SUBSCRIPTION_CHECK_ENDPOINT}"
+            data = {
+                "subscriptionId": easy_distro_subscription_id,
+                "email": self.env.user.email,
+                "moduleName": "easy-distro",
+            }
 
             response = requests.post(
                 url, json=data, headers={"Content-Type": "application/json"}, timeout=10
