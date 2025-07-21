@@ -14,10 +14,10 @@ class ResConfigSettings(models.TransientModel):
     GOOGLE_OPTIMIZE_ENDPOINT = "/api/google/optimize-route"
 
     # Subscription fields
-    subscription_id = fields.Char(
+    delivery_optimizer_subscription_id = fields.Char(
         string="Subscription ID",
-        help="Enter your subscription ID from the purchase confirmation",
-        config_parameter="delivery_optimizer.subscription_id",
+        config_parameter="delivery_optimizer.delivery_optimizer_subscription_id",
+        help="Enter your Delivery Route Optimizer subscription ID",
     )
 
     # Activation tracking fields
@@ -110,20 +110,22 @@ class ResConfigSettings(models.TransientModel):
             response = requests.post(
                 url, json=data, headers={"Content-Type": "application/json"}, timeout=30
             )
-            response.raise_for_status()
+            try:
+                response.raise_for_status()
+            except requests.exceptions.HTTPError as e:
+                # Handle 400 error (module name mismatch or similar)
+                if response.status_code == 400:
+                    raise UserError(_("This subscription code is not for this module."))
+                # Other HTTP errors
+                error_message = f"HTTP {response.status_code}"
+                raise UserError(_(f"Subscription service error: {error_message}"))
             return response.json()
         except requests.exceptions.RequestException as e:
-            error_message = (
-                f"HTTP {response.status_code}" if hasattr(e, "response") else str(e)
-            )
-            _logger.error(
-                f"HTTP error when calling Vercel API: {url}, Status: {error_message}"
-            )
-            raise UserError(_(f"Subscription Code not found."))
+            raise UserError(_(f"Subscription service error: {str(e)}"))
 
     def check_subscription_status(self):
         """Check subscription status using your Vercel API"""
-        if not self.subscription_id:
+        if not self.delivery_optimizer_subscription_id:
             raise UserError(_("Please enter a subscription ID first."))
 
         user_email = self.env.user.email
@@ -134,7 +136,7 @@ class ResConfigSettings(models.TransientModel):
 
         try:
             data = {
-                "subscriptionId": self.subscription_id,
+                "subscriptionId": self.delivery_optimizer_subscription_id,
                 "email": user_email,
                 "moduleName": "delivery-route-optimizer",
             }

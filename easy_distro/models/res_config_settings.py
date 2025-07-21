@@ -14,10 +14,10 @@ class ResConfigSettings(models.TransientModel):
     GOOGLE_DISTANCE_MATRIX_ENDPOINT = "/api/google/distance-matrix"
 
     # Subscription fields
-    subscription_id = fields.Char(
+    easy_distro_subscription_id = fields.Char(
         string="Subscription ID",
         help="Enter your subscription ID from the purchase confirmation",
-        config_parameter="easy_distro.subscription_id",
+        config_parameter="easy_distro.easy_distro_subscription_id",
     )
 
     # Activation tracking fields
@@ -41,7 +41,7 @@ class ResConfigSettings(models.TransientModel):
             return "http://localhost:3000"
         return "http://vikuno"
 
-    def easy_distro_call_vercel_api(self, data, endpoint=None):
+    def _call_vercel_api(self, data, endpoint=None):
         """Make API call to Vercel with proper error handling"""
         if endpoint is None:
             endpoint = self.SUBSCRIPTION_CHECK_ENDPOINT
@@ -52,28 +52,22 @@ class ResConfigSettings(models.TransientModel):
             response = requests.post(
                 url, json=data, headers={"Content-Type": "application/json"}, timeout=30
             )
-            response.raise_for_status()
+            try:
+                response.raise_for_status()
+            except requests.exceptions.HTTPError as e:
+                # Handle 400 error (module name mismatch or similar)
+                if response.status_code == 400:
+                    raise UserError(_("This subscription code is not for this module."))
+                # Other HTTP errors
+                error_message = f"HTTP {response.status_code}"
+                raise UserError(_(f"Subscription service error: {error_message}"))
             return response.json()
-        except requests.exceptions.HTTPError as e:
-            status_code = e.response.status_code if e.response else None
-            if status_code == 404:
-                raise UserError(_("Subscription Code not found."))
-            elif status_code == 400:
-                raise UserError(_("This subscription is not for this module."))
-            else:
-                _logger.error(
-                    f"HTTP error when calling Vercel API: {url}, Status: HTTP {status_code}"
-                )
-                raise UserError(_(f"Subscription service error: HTTP {status_code}"))
         except requests.exceptions.RequestException as e:
-            _logger.error(
-                f"HTTP error when calling Vercel API: {url}, Status: {str(e)}"
-            )
             raise UserError(_(f"Subscription service error: {str(e)}"))
 
     def easy_distro_check_subscription_status(self):
         """Check subscription status using your Vercel API"""
-        if not self.subscription_id:
+        if not self.easy_distro_subscription_id:
             raise UserError(_("Please enter a subscription ID first."))
 
         user_email = self.env.user.email
@@ -84,11 +78,11 @@ class ResConfigSettings(models.TransientModel):
 
         try:
             data = {
-                "subscriptionId": self.subscription_id,
+                "subscriptionId": self.easy_distro_subscription_id,
                 "email": user_email,
                 "moduleName": "easy-distro",
             }
-            response = self.easy_distro_call_vercel_api(data, "/api/check-subscription")
+            response = self._call_vercel_api(data, "/api/check-subscription")
             if response.get("valid"):
                 message = response.get("message", "Subscription validated successfully")
                 return {
@@ -105,7 +99,6 @@ class ResConfigSettings(models.TransientModel):
                 error_msg = response.get("message", "Subscription validation failed")
                 raise UserError(_(error_msg))
         except Exception as e:
-            _logger.error(f"Failed to check subscription via Vercel API: {str(e)}")
             raise UserError(_("Subscription service error: %s") % str(e))
 
     def easy_distro_get_subscription_status(self):
@@ -116,18 +109,17 @@ class ResConfigSettings(models.TransientModel):
 
     def easy_distro_check_subscription_status_vercel(self):
         """Check if subscription is active via Vercel API"""
-        subscription_id = (
+        easy_distro_subscription_id = (
             self.env["ir.config_parameter"]
             .sudo()
-            .get_param("easy_distro.subscription_id")
+            .get_param("easy_distro.easy_distro_subscription_id")
         )
-        if not subscription_id:
+        if not easy_distro_subscription_id:
             return False
 
         try:
-            data = {"subscriptionId": subscription_id, "moduleName": "easy-distro"}
-            response = self.easy_distro_call_vercel_api(data, "/api/check-subscription")
+            data = {"subscriptionId": easy_distro_subscription_id, "moduleName": "easy-distro"}
+            response = self._call_vercel_api(data, "/api/check-subscription")
             return response.get("valid", False)
         except Exception as e:
-            _logger.error(f"Failed to check subscription status: {str(e)}")
-            return False
+            raise UserError(_("Subscription service error: %s") % str(e))

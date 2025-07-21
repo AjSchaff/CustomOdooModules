@@ -78,12 +78,12 @@ class StockPicking(models.Model):
         current_user_email = self.env.user.email
         if not current_user_email:
             raise UserError(_("User email is required to validate subscription."))
-        subscription_id = (
+        delivery_optimizer_subscription_id = (
             self.env["ir.config_parameter"]
             .sudo()
-            .get_param("delivery_optimizer.subscription_id")
+            .get_param("delivery_optimizer.delivery_optimizer_subscription_id")
         )
-        if not subscription_id:
+        if not delivery_optimizer_subscription_id:
             raise UserError(
                 _(
                     "Subscription ID is required. Please enter your subscription ID in Settings → Delivery Route Optimizer → Subscription Settings."
@@ -91,7 +91,7 @@ class StockPicking(models.Model):
             )
         try:
             data = {
-                "subscriptionId": subscription_id,
+                "subscriptionId": delivery_optimizer_subscription_id,
                 "email": current_user_email,
                 "moduleName": "delivery-route-optimizer",
             }
@@ -117,7 +117,7 @@ class StockPicking(models.Model):
             _logger.error(f"Failed to validate subscription: {str(e)}")
             raise UserError(
                 _(
-                    "Failed to validate subscription. Please try again or contact support."
+                    "Delivery Route Optimizer subscription is not active. Please activate your subscription in Settings > Delivery Route Optimizer."
                 )
             )
 
