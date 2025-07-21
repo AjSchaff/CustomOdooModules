@@ -20,7 +20,7 @@
 #############################################################################
 
 {
-    "name": "EasyDistro - Find the closest warehouse",
+    "name": "Easy Distro - Find the closest warehouse",
     "version": "18.0.1.0.0",
     "category": "Tools",
     "summary": "Find the closest Distributor for any of your contacts with the click of a button.",
@@ -45,7 +45,7 @@
         "views/res_config_settings_views.xml",
         "data/model_load_stub.xml",
     ],
-    "price": 150,
+    "price": 40,
     "images": ["static/description/banner.png"],
     "installable": True,
     "application": False,
