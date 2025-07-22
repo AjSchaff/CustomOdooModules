@@ -45,6 +45,7 @@
         "views/res_config_settings_views.xml",
         "data/model_load_stub.xml",
     ],
+    "price": 70,
     "images": ["static/description/banner.png"],
     "installable": True,
     "application": False,
