@@ -23,7 +23,7 @@
     "name": "Easy Distro - Find the closest warehouse",
     "version": "18.0.1.0.0",
     "category": "Tools",
-    "summary": "Find the closest Distributor for any of your contacts with the click of a button.",
+    "summary": "Find the closest distributor for any of your contacts.",
     "description": """
         Find the closest Distributor for any of your contacts with the click of a button.
         Requires subscription activation for Google Maps API access.
