@@ -129,3 +129,4 @@ dmypy.json
 .pyre/
 
 /base_account_budget/*
+.DS_Store
